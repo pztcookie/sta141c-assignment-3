@@ -1,0 +1,72 @@
+---
+title: "Question 1"
+---
+
+```{r}
+library(tidyverse)
+```
+
+Consider the function `slr` which returns the intercept and slope of a simple linear regression model.
+
+```{r}
+# get a column of data
+extract <- function(data, x) {
+    pull(select(data, x))
+}
+```
+
+```{r}
+mean_narm <- function(data, y) {
+  mean(extract(data, y), na.rm = TRUE)
+}
+```
+
+```{r}
+dot <- function(y, x) {
+  sum(x * y)
+}
+```
+
+
+```{r}
+slr <- function(data) {
+  x <- data$x
+  y <- data$y
+  mux <- mean_narm(data, "x")
+  muy <- mean_narm(data, "y")
+  sxy <- dot(x - mux, y - muy)
+  sxx <- dot(x - mux, x - mux)
+  slope <- sxy / sxx
+  intercept <- muy - slope * mux
+  c(intercept, slope)
+}
+```
+
+Despite of the inefficiency of the code, this code is erroneous and doesn't return the correct result.
+
+```{r}
+df <- tibble(x = rnorm(10), y = rnorm(10))
+all.equal(
+  slr(df),
+  coef(lm(y ~ x, data = df)),
+  check.attributes = FALSE)
+```
+
+
+##### Could you find the culprit (explain it) and provide a targeted fix (minimal changes to the code)?
+
+Hint: you could use `browser()`, `debug`/`undebug` or `debugonce` to debug the functions.
+
+
+
+
+
+```{r}
+stopifnot(
+  all.equal(
+    slr(df),
+    coef(lm(y ~ x, data = df)),
+    check.attributes = FALSE)
+)
+```
+

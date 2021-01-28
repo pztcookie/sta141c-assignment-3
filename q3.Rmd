@@ -2,14 +2,11 @@
 title: "Question 3"
 ---
 
-The Mann Whitney statistic is one of the non parametric statistic to describe how different two samples are.
-SUppose $X_i, i=1,...,n$ and $Y_j, j=1,...,m$ are two observations from two populations. The Mann-Whitney statistic
-is computed as
+The Mann Whitney statistic is one of the non-parametric statistics that describe how different two samples are. Suppose $X_i, i=1,...,n$ and $Y_j, j=1,...,m$ are two observations from two populations. The Mann-Whitney statistic is computed as
 
 $$
 U = \sum_{i=1}^n \sum_{j=1}^m S(X_i, Y_j)
-$$
-where
+$$ where
 
 $$
 S(x,y) = \begin{cases}
@@ -17,8 +14,8 @@ S(x,y) = \begin{cases}
 1/2, & \text{ if } x = y\\
 0, & \text{ if } x < y. \\
 \end{cases}
-$$
-This is a naive R implemention.
+$$ This is a naive R implementation.
+
 ```{r}
 mwstatR <- function(x, y) {
     sum(outer(x, y, `>`)) + 0.5 * sum(outer(x, y, `==`))
@@ -32,8 +29,7 @@ y <- runif(n)
 s <- mwstatR(x, y)
 ```
 
-##### (a) Write an R function which uses `for` loops instead of `outer` to caclulate the MW statistic.
-
+##### (a) Write an R function which uses `for` loops instead of `outer` to calculate the MW statistic.
 
 ```{r}
 mwstatR2 <- function(x, y) {
@@ -45,16 +41,10 @@ mwstatR2 <- function(x, y) {
 all.equal(s, mwstatR2(x, y))
 ```
 
-
 ##### (b) write a function `mwstatC` in Rcpp which calculates the MW statistic between two numeric vectors `x` and `y`. (Assume that `x` and `y` do not contain missing values).
-
-
 
 ```{r}
 all.equal(s, mwstatC(x, y))
 ```
 
-
 ##### (b) Benchmark the functions with inputs of different lengths (`n = 10, 100, 1000`), comment on the results.
-
-
